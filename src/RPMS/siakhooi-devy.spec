@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.15.0
+Version:        0.16.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -29,12 +29,16 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-get
 %{_bindir}/git-log
 %{_bindir}/git-reset
+%{_bindir}/git-status
+%{_bindir}/git-update-index
 %{_bindir}/mvn-deps
 %{_bindir}/mvn-install
 %{_bindir}/mvn-with-settings
-%{_bindir}/git-update-index
 
 %changelog
+* Wed Mar 18 2026 Siak Hooi <siakhooi@gmail.com> - 0.16.0
+- add git-status
+
 * Sat Jan 31 2026 Siak Hooi <siakhooi@gmail.com> - 0.15.0
 - add git-update-index, git-commit -A repo_root [repo_path]
 

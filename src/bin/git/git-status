@@ -1,0 +1,40 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-p] [path]"
+	echo "  -p   - porcelain, return 0 if clean, 1 if dirty"
+}
+while getopts "hp" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	p)
+		porcelain=true
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [[ $# -ne 1 ]] && [[ $# -ne 0 ]]; then
+	usage
+	exit 0
+fi
+
+readonly path=$1
+
+git_options=()
+status_options=()
+if [[ "$porcelain" == true ]]; then
+	status_options+=("--porcelain")
+fi
+if [[ -n "$path" ]]; then
+	git_options+=("-C" "$path")
+fi
+
+git "${git_options[@]}" status "${status_options[@]}"
