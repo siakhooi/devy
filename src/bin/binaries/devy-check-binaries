@@ -65,6 +65,9 @@ for bin in "${binaries[@]}"; do
 		elif $show_version && [[ "$bin" == "gh" ]]; then # third word of line 1
 			version=$("$bin" --version | awk 'NR==1 {print $3}')
 			found+=("$bin=$version")
+		elif $show_version && [[ "$bin" == "glab" ]]; then # second word of line 1
+			version=$("$bin" version | awk 'NR==1 {print $2}')
+			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "node" ]]; then # remove Leading 'v'
 			version=$("$bin" --version | cut -c2-)
 			found+=("$bin=$version")
