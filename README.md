@@ -30,6 +30,7 @@ sudo yum install siakhooi-devy
 - `git-log`
 - `git-reset`
 - `git-update-index`
+- `m2-path`
 - `mvn-deps`
 - `mvn-install`
 - `mvn-with-settings`

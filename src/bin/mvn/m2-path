@@ -1,0 +1,30 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] mavenArtifact"
+	echo " -h                Show this help message and exit"
+	echo " mavenArtifact     The Maven artifact to change directory to (e.g., com.example:my-artifact)"
+}
+while getopts "h" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 1 ]]; then
+	usage
+	exit 0
+fi
+
+mavenArtifact="$1"
+groupId=$(echo "$mavenArtifact" | cut -d: -f1)
+artifactId=$(echo "$mavenArtifact" | cut -d: -f2)
+groupPath=$(echo "$groupId" | tr '.' '/')
+echo "$HOME/.m2/repository/$groupPath/$artifactId"

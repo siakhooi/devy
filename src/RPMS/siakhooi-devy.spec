@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.16.0
+Version:        0.17.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -31,11 +31,15 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-reset
 %{_bindir}/git-status
 %{_bindir}/git-update-index
+%{_bindir}/m2-path
 %{_bindir}/mvn-deps
 %{_bindir}/mvn-install
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Fri Mar 27 2026 Siak Hooi <siakhooi@gmail.com> - 0.17.0
+- add m2-path
+
 * Wed Mar 18 2026 Siak Hooi <siakhooi@gmail.com> - 0.16.0
 - add git-status
 
