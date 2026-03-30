@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.17.0
+Version:        0.18.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -37,6 +37,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Mon Mar 30 2026 Siak Hooi <siakhooi@gmail.com> - 0.18.0
+- devy-check-binaries add robot
+
 * Fri Mar 27 2026 Siak Hooi <siakhooi@gmail.com> - 0.17.0
 - add m2-path
 

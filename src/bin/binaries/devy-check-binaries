@@ -80,6 +80,9 @@ for bin in "${binaries[@]}"; do
 		elif $show_version && [[ "$bin" == "docker" ]]; then
 			version=$("$bin" --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')
 			found+=("$bin=$version")
+		elif $show_version && [[ "$bin" == "robot" ]]; then # third word
+			version=$("$bin" --version | awk '{print $3}')
+			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "java" ]]; then
 			version=$("$bin" -version 2>&1 | awk -F'"' '/version/ {print $2}')
 			found+=("$bin=$version")
