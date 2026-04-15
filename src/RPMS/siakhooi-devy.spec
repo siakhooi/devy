@@ -4,7 +4,7 @@ Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
 License:        MIT
-URL:            https://github.com/siakhooi/bash-devy
+URL:            https://github.com/siakhooi/devy
 Source0:        https://github.com/siakhooi/%{name}/archive/refs/tags/${version}.tar.gz
 BuildArch:      noarch
 

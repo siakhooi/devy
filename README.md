@@ -1,4 +1,4 @@
-# bash-devy
+# devy
 
 dev scripts for devcontainers/wsl
 
