@@ -1,0 +1,9 @@
+repo: siakhooi/apt
+branch: main
+git_commit_user: devy
+git_commit_email: devy@siakhooi.github.io
+git_commit_message: "devy: Auto deploy"
+
+files:
+  - source: siakhooi-devy_0.18.0_amd64.deb
+    target: docs/pool/main/binary-amd64/siakhooi-devy_0.18.0_amd64.deb
