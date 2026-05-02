@@ -5,5 +5,6 @@ git_commit_email: devy@siakhooi.github.io
 git_commit_message: "devy: Auto deploy"
 
 files:
-  - source: siakhooi-devy-0.18.0-1.fc43.noarch.rpm
-    target: docs/siakhooi-devy-0.18.0-1.fc43.noarch.rpm
+  - source: siakhooi-devy-*.fc*.noarch.rpm
+    target: docs/
+    items: 1
