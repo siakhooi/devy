@@ -1,46 +1,53 @@
 #!/bin/bash
 
+set -euo pipefail
+
 usage() {
-	echo "Usage: $(basename "$0") [-h] [-p]"
-	echo "Options:"
-	echo "  -h    Show this help message"
-	echo "  -p    Print the path to the settings.xml file, and exit"
+  echo "Usage: $(basename "$0") [-h] [-p]"
+  echo "Options:"
+  echo "  -h    Show this help message"
+  echo "  -p    Print the path to the settings.xml file, and exit"
 }
 find_settings() {
-	local currentPath
-	local settings=settings.xml
-	currentPath=$(realpath .)
-	while true; do
-		if [[ -f "$currentPath/$settings" ]]; then
-			echo "$currentPath/$settings"
-			return
-		fi
-		if [[ $currentPath != '/' ]]; then
-			currentPath=$(dirname "$currentPath")
-		else
-			break
-		fi
-	done
-	echo ""
+  local currentPath
+  local settings=settings.xml
+  currentPath=$(realpath .)
+  while true; do
+    if [[ -f "$currentPath/$settings" ]]; then
+      echo "$currentPath/$settings"
+      return
+    fi
+    if [[ $currentPath != '/' ]]; then
+      currentPath=$(dirname "$currentPath")
+    else
+      break
+    fi
+  done
+  echo ""
 }
 
 while getopts "hp" arg; do
-	case $arg in
-	h)
-		usage
-		exit 0
-		;;
-	p)
-		find_settings
-		exit 0
-		;;
-	*)
-		usage
-		exit 1
-		;;
-	esac
+  case $arg in
+    h)
+      usage
+      exit 0
+      ;;
+    p)
+      find_settings
+      exit 0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
 done
 shift $((OPTIND - 1))
+
+if ! command -v mvn &>/dev/null; then
+  echo.error "Error: mvn is not installed. Please install it to run this script."
+  exit 1
+fi
 
 options=()
 settings=$(find_settings)
@@ -48,6 +55,6 @@ settings=$(find_settings)
 [[ -f $settings ]] && options+=(-s "$settings")
 
 (
-	set -x
-	mvn "${options[@]}" "$@"
+  set -x
+  mvn "${options[@]}" "$@"
 )
