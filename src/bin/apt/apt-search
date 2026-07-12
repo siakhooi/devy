@@ -1,42 +1,74 @@
 #!/bin/bash
 
+set -euo pipefail
+
 usage() {
   echo "Usage: $(basename "$0") [-h] [-n package_name] [-b path_to_binary]"
+  echo "  -h                      Show this help message and exit"
+  echo "  -n package_name         Search for a package by name"
+  echo "  -b path_to_binary       Search for an installed binary by path"
 }
+package_name=
+binary_path=
 action=
 while getopts "hn:b:" arg; do
   case $arg in
-  h)
-    usage
-    exit 0
-    ;;
-  n)
-    action=name
-    package_name="$OPTARG"
-    ;;
-  b)
-    action=binary
-    binary_path="$OPTARG"
-    ;;
-  *)
-    usage
-    exit 1
-    ;;
+    h)
+      usage
+      exit 0
+      ;;
+    n)
+      if [[ -n $action ]] && [[ $action != name ]]; then
+        echo.error "Error: -n and -b cannot be used together"
+        exit 1
+      fi
+      if [[ -z $OPTARG ]]; then
+        echo.error "Error: -n requires a package name"
+        exit 1
+      fi
+      action=name
+      package_name="$OPTARG"
+      ;;
+    b)
+      if [[ -n $action ]] && [[ $action != binary ]]; then
+        echo.error "Error: -n and -b cannot be used together"
+        exit 1
+      fi
+      if [[ -z $OPTARG ]]; then
+        echo.error "Error: -b requires a binary path"
+        exit 1
+      fi
+      action=binary
+      binary_path="$OPTARG"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
   esac
 done
 shift $((OPTIND - 1))
 if [[ $# -ne 0 ]]; then
   usage
-  exit 0
+  exit 1
+fi
+
+if ! command -v apt-cache &>/dev/null; then
+  echo.error "Error: apt-cache is not installed. Please install it to run this script."
+  exit 1
+fi
+if ! command -v dpkg &>/dev/null; then
+  echo.error "Error: dpkg is not installed. Please install it to run this script."
+  exit 1
 fi
 
 if [[ -z $action ]]; then
   usage
-  exit 0
+  exit 1
 fi
 
 if [[ $action == name ]]; then
-  apt-cache search "$package_name"
+  exec apt-cache search "$package_name"
 elif [[ $action == binary ]]; then
-  dpkg -S "$binary_path"
+  exec dpkg -S "$binary_path"
 fi

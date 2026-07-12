@@ -2,7 +2,7 @@ repo: siakhooi/rpms
 branch: main
 git_commit_user: devy
 git_commit_email: devy@siakhooi.github.io
-git_commit_message: "devy: Auto deploy"
+git_commit_message: "{repo_name}: {ref_name} | {commit_short}"
 
 files:
   - source: siakhooi-devy-*.fc*.noarch.rpm
