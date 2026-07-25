@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+  echo "Usage: $(basename "$0") [-h] [-C new_branch_name]"
+  echo " -h                 Show this help message and exit"
+  echo " -C new_branch_name Create new branch and push to upstream"
+
+}
+branch=
+action=
+while getopts "hC:" arg; do
+  case $arg in
+    h)
+      usage
+      exit 0
+      ;;
+    C)
+      action=create
+      branch="$OPTARG"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+if [[ -z $action ]]; then
+  echo "No action specified"
+  usage
+  exit 1
+fi
+
+if [[ $action == "create" ]]; then
+  set -x
+  git checkout -b "$branch"
+  git push --set-upstream origin "$branch"
+fi
