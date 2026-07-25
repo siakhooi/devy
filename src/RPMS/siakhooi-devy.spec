@@ -25,6 +25,7 @@ dev scripts for devcontainers/wsl
 %{_bindir}/apt-search
 %{_bindir}/get-build-version
 %{_bindir}/devy-check-binaries
+%{_bindir}/gh-pr-create
 %{_bindir}/gh-repo-create
 %{_bindir}/git-branch
 %{_bindir}/git-commit
