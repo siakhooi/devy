@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.18.0
+Version:        0.19.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -40,6 +40,11 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Sat Jul 25 2026 Siak Hooi <siakhooi@gmail.com> - 0.19.0
+- bin add: git-branch
+- bin add: gh-repo-create
+- bin add: gh-pr-create
+
 * Mon Mar 30 2026 Siak Hooi <siakhooi@gmail.com> - 0.18.0
 - devy-check-binaries add robot
 
