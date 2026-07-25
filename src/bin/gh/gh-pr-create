@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-b base_branch] [-a assignee] [-r reviewer] title body"
+	echo " -b base_branch: The base branch to compare with (default: main)"
+	echo " -a assignee: The user to assign the PR to"
+	echo " -r reviewer: The user to request a review from"
+}
+base_branch=main
+assignee=
+reviewer=
+while getopts "hb:a:r:" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	b)
+		base_branch=$OPTARG
+		;;
+	a)
+		assignee=$OPTARG
+		;;
+	r)
+		reviewer=$OPTARG
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 2 ]]; then
+	usage
+	exit 0
+fi
+
+new_branch=$(git-get -b)
+options=()
+options+=(--base "$base_branch")
+options+=(--head "$new_branch")
+options+=(--title "$1")
+options+=(--body "$2")
+if [[ -n "$assignee" ]]; then
+	options+=(--assignee "$assignee")
+fi
+if [[ -n "$reviewer" ]]; then
+	options+=(--reviewer "$reviewer")
+fi
+gh pr create "${options[@]}"
