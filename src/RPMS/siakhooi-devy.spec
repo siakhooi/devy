@@ -38,6 +38,7 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-deps
 %{_bindir}/mvn-install
 %{_bindir}/mvn-with-settings
+%{_bindir}/urlencode
 
 %changelog
 * Sat Jul 25 2026 Siak Hooi <siakhooi@gmail.com> - 0.19.0
