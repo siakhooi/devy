@@ -9,7 +9,7 @@ usage() {
   echo "  -b    Specify the review body, default to 'auto reviewed by $(basename "$0")'"
 }
 event=
-body='auto reviewed by '"$(basename "$0")"
+body="auto reviewed by $(basename "$0")"
 while getopts "he:b:" opt; do
   case ${opt} in
   h)
