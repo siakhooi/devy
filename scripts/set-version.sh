@@ -10,15 +10,15 @@ set -euo pipefail
 . ./release.env
 
 if [[ -z "${RELEASE_VERSION:-}" ]]; then
-	echo "Error: RELEASE_VERSION must be set in release.env."
-	exit 1
+  echo "Error: RELEASE_VERSION must be set in release.env."
+  exit 1
 fi
 
 # shellcheck disable=SC1091
 . ./build.env
 if [[ -z "${PACKAGE_NAME:-}" ]]; then
-	echo "Error: PACKAGE_NAME variable not set in build.env."
-	exit 1
+  echo "Error: PACKAGE_NAME variable not set in build.env."
+  exit 1
 fi
 
 sed -i 'src/DEBIAN/control' -e 's@Version: .*@Version: '"$RELEASE_VERSION"'@g'

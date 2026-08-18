@@ -20,44 +20,44 @@ selection=()
 selection2=()
 while getopts "harDu:R:Vl:s:nA" opt; do
   case ${opt} in
-    h)
-      usage
-      exit 0
-      ;;
-    a)
-      selection+=("assignee:@me")
-      ;;
-    r)
-      selection+=("user-review-requested:@me")
-      ;;
-    D)
-      selection2+=("author:app/dependabot")
-      ;;
-    V)
-      selection2+=("author:app/renovate")
-      ;;
-    A)
-      selection+=("author:@me")
-      ;;
-    u)
-      selection+=("user:$OPTARG")
-      ;;
-    R)
-      selection+=("repo:$OPTARG")
-      ;;
-    l)
-      selection2+=("label:$OPTARG")
-      ;;
-    n)
-      selection2+=("review:none")
-      ;;
-    s)
-      per_page="$OPTARG"
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  a)
+    selection+=("assignee:@me")
+    ;;
+  r)
+    selection+=("user-review-requested:@me")
+    ;;
+  D)
+    selection2+=("author:app/dependabot")
+    ;;
+  V)
+    selection2+=("author:app/renovate")
+    ;;
+  A)
+    selection+=("author:@me")
+    ;;
+  u)
+    selection+=("user:$OPTARG")
+    ;;
+  R)
+    selection+=("repo:$OPTARG")
+    ;;
+  l)
+    selection2+=("label:$OPTARG")
+    ;;
+  n)
+    selection2+=("review:none")
+    ;;
+  s)
+    per_page="$OPTARG"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 

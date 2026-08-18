@@ -3,6 +3,8 @@ clean:
 	rm -rf target *.deb *.sha256sum *.sha512sum *.rpm ~/rpmbuild
 shellcheck:
 	./scripts/shellcheck.sh
+format-scripts:
+  ./scripts/format-scripts.sh
 build-deb: clean shellcheck
 	./scripts/build-deb.sh
 build-rpm: clean shellcheck
@@ -34,4 +36,4 @@ docker-build-rpm:
 docker-build-deb:
 	docker run --rm -v {{ root }}:/workspaces docker.io/siakhooi/devcontainer:deb2604 scripts/build-deb.sh
 
-all: clean set-version shellcheck docker-build-deb docker-build-rpm
+all: clean set-version format-scripts shellcheck docker-build-deb docker-build-rpm

@@ -13,38 +13,38 @@ binary_path=
 action=
 while getopts "hn:b:" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    n)
-      if [[ -n $action ]] && [[ $action != name ]]; then
-        echo.error "Error: -n and -b cannot be used together"
-        exit 1
-      fi
-      if [[ -z $OPTARG ]]; then
-        echo.error "Error: -n requires a package name"
-        exit 1
-      fi
-      action=name
-      package_name="$OPTARG"
-      ;;
-    b)
-      if [[ -n $action ]] && [[ $action != binary ]]; then
-        echo.error "Error: -n and -b cannot be used together"
-        exit 1
-      fi
-      if [[ -z $OPTARG ]]; then
-        echo.error "Error: -b requires a binary path"
-        exit 1
-      fi
-      action=binary
-      binary_path="$OPTARG"
-      ;;
-    *)
-      usage
+  h)
+    usage
+    exit 0
+    ;;
+  n)
+    if [[ -n $action ]] && [[ $action != name ]]; then
+      echo.error "Error: -n and -b cannot be used together"
       exit 1
-      ;;
+    fi
+    if [[ -z $OPTARG ]]; then
+      echo.error "Error: -n requires a package name"
+      exit 1
+    fi
+    action=name
+    package_name="$OPTARG"
+    ;;
+  b)
+    if [[ -n $action ]] && [[ $action != binary ]]; then
+      echo.error "Error: -n and -b cannot be used together"
+      exit 1
+    fi
+    if [[ -z $OPTARG ]]; then
+      echo.error "Error: -b requires a binary path"
+      exit 1
+    fi
+    action=binary
+    binary_path="$OPTARG"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))

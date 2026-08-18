@@ -25,21 +25,21 @@ get_build_number() {
 snapshot=
 while getopts "hns" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    n)
-      get_build_number
-      exit 0
-      ;;
-    s)
-      snapshot="-SNAPSHOT"
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  n)
+    get_build_number
+    exit 0
+    ;;
+  s)
+    snapshot="-SNAPSHOT"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))

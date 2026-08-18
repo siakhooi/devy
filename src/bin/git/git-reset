@@ -11,23 +11,23 @@ usage() {
 action=
 while getopts "hxcs" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    x)
-      action=x
-      ;;
-    c)
-      action=c
-      ;;
-    s)
-      action=s
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  x)
+    action=x
+    ;;
+  c)
+    action=c
+    ;;
+  s)
+    action=s
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))

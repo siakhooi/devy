@@ -16,30 +16,30 @@ message=Y
 options=()
 while getopts "heranA" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    e)
-      action=edit
-      ;;
-    r)
-      action=review
-      ;;
-    a)
-      options+=(--amend)
-      ;;
-    n)
-      message=N
-      options+=(--amend --no-edit)
-      ;;
-    A)
-      action=autocommit
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  e)
+    action=edit
+    ;;
+  r)
+    action=review
+    ;;
+  a)
+    options+=(--amend)
+    ;;
+  n)
+    message=N
+    options+=(--amend --no-edit)
+    ;;
+  A)
+    action=autocommit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))
