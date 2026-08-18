@@ -28,6 +28,7 @@ dev scripts for devcontainers/wsl
 %{_bindir}/gh-pr-create
 %{_bindir}/gh-repo-create
 %{_bindir}/ghapi-pulls-get
+%{_bindir}/ghapi-pulls-reviews-get
 %{_bindir}/ghapi-search-issue
 %{_bindir}/git-branch
 %{_bindir}/git-commit

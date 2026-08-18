@@ -37,5 +37,5 @@ fi
   curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -H "X-GitHub-Api-Version: 2026-03-10" \
-    -G "https://api.github.com/repos/$owner/$repo/pulls/$number"
+    -G "https://api.github.com/repos/$owner/$repo/pulls/$number/reviews"
 )
