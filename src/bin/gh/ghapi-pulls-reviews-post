@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  echo "Usage: $(basename "$0") [-h] [-e event] [-b body] owner repo number commit"
+  echo "  -h    Show this help message"
+  echo "  -e    Specify the review event (e.g., APPROVE, REQUEST_CHANGES), default to APPROVE"
+  echo "  -b    Specify the review body, default to 'auto reviewed by $(basename "$0")'"
+}
+event=
+body='auto reviewed by '"$(basename "$0")"
+while getopts "he:b:" opt; do
+  case ${opt} in
+  h)
+    usage
+    exit 0
+    ;;
+  e)
+    event="$OPTARG"
+    ;;
+  b)
+    body="$OPTARG"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 4 ]]; then
+  usage
+  exit 1
+fi
+
+if [[ -z "$event" ]]; then
+  event="APPROVE"
+fi
+
+if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+  echo "Error: GITHUB_TOKEN environment variable is not set." >&2
+  exit 1
+fi
+readonly owner="$1"
+readonly repo="$2"
+readonly number="$3"
+readonly sha="$4"
+(
+  set -x
+  curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "X-GitHub-Api-Version: 2026-03-10" \
+    "https://api.github.com/repos/$owner/$repo/pulls/$number/reviews" \
+    -d '{
+		"body": "'"$body"'",
+		"event": "'"$event"'",
+		"commit_id": "'"$sha"'"
+	}'
+)

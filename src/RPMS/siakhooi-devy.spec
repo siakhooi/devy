@@ -30,6 +30,7 @@ dev scripts for devcontainers/wsl
 %{_bindir}/ghapi-commits-check-runs
 %{_bindir}/ghapi-pulls-get
 %{_bindir}/ghapi-pulls-reviews-get
+%{_bindir}/ghapi-pulls-reviews-post
 %{_bindir}/ghapi-search-issue
 %{_bindir}/git-branch
 %{_bindir}/git-commit
