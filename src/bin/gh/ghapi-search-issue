@@ -3,103 +3,86 @@
 set -euo pipefail
 
 usage() {
-	echo "Usage: $(basename "$0") [-h] [-t] [-a] [-r] [-D] [-A] [-s count] [-u username] [-R owner/name] [-l label]"
-	echo "  -h    Show this help message"
-	echo "  -u    select user:<username>"
-	echo "  -a    select assignee=@me"
-	echo "  -r    select review-requested=@me"
-	echo "  -A    select author:@me"
-	echo "  -D    select author:app/dependabot"
-	echo "  -V    select author:app/renovate"
-	echo "  -R    select repo:<owner/name>"
-	echo "  -n    select review:none"
-	echo "  -l    select label:<label>"
-	echo "  -t    print in table instead json"
-	echo "  -s    select per_page count (default: 20)"
+  echo "Usage: $(basename "$0") [-h] [-a] [-r] [-D] [-A] [-s count] [-u username] [-R owner/name] [-l label]"
+  echo "  -h    Show this help message"
+  echo "  -u    select user:<username>"
+  echo "  -a    select assignee=@me"
+  echo "  -r    select review-requested=@me"
+  echo "  -A    select author:@me"
+  echo "  -D    select author:app/dependabot"
+  echo "  -V    select author:app/renovate"
+  echo "  -R    select repo:<owner/name>"
+  echo "  -n    select review:none"
+  echo "  -l    select label:<label>"
+  echo "  -s    select per_page count (default: 20)"
 }
 selection=()
 selection2=()
-output=json
-while getopts "hatrDu:R:Vl:s:nA" opt; do
-	case ${opt} in
-	h)
-		usage
-		exit 0
-		;;
-	t)
-		output=table
-		;;
-	a)
-		selection+=("assignee:@me")
-		;;
-	r)
-		selection+=("user-review-requested:@me")
-		;;
-	D)
-		selection2+=("author:app/dependabot")
-		;;
-	V)
-		selection2+=("author:app/renovate")
-		;;
-	A)
-		selection+=("author:@me")
-		;;
-	u)
-		selection+=("user:$OPTARG")
-		;;
-	R)
-		selection+=("repo:$OPTARG")
-		;;
-	l)
-		selection2+=("label:$OPTARG")
-		;;
-	n)
-		selection2+=("review:none")
-		;;
-	s)
-		per_page="$OPTARG"
-		;;
-	*)
-		usage
-		exit 1
-		;;
-	esac
+while getopts "harDu:R:Vl:s:nA" opt; do
+  case ${opt} in
+    h)
+      usage
+      exit 0
+      ;;
+    a)
+      selection+=("assignee:@me")
+      ;;
+    r)
+      selection+=("user-review-requested:@me")
+      ;;
+    D)
+      selection2+=("author:app/dependabot")
+      ;;
+    V)
+      selection2+=("author:app/renovate")
+      ;;
+    A)
+      selection+=("author:@me")
+      ;;
+    u)
+      selection+=("user:$OPTARG")
+      ;;
+    R)
+      selection+=("repo:$OPTARG")
+      ;;
+    l)
+      selection2+=("label:$OPTARG")
+      ;;
+    n)
+      selection2+=("review:none")
+      ;;
+    s)
+      per_page="$OPTARG"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
 done
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
-	echo "Error: GITHUB_TOKEN environment variable is not set." >&2
-	exit 1
+  echo "Error: GITHUB_TOKEN environment variable is not set." >&2
+  exit 1
 fi
 
 [[ ${#selection[@]} -eq 0 ]] && selection=("assignee:@me")
 
 options=(
-	is:pr
-	is:open
-	"${selection[@]}"
-	"${selection2[@]}"
+  is:pr
+  is:open
+  "${selection[@]}"
+  "${selection2[@]}"
 )
 : "${per_page:=10}"
 
 q=${options[*]}
-if [[ $output == "table" ]]; then
-	(
-		set -x
-		curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-			-H "Accept: application/vnd.github.v3+json" \
-			-H "X-GitHub-Api-Version: 2026-03-10" \
-			-G "https://api.github.com/search/issues" \
-			--data-urlencode "q=$q" \
-			--data-urlencode "per_page=$per_page"
-	) | tee .ghapi-issue-search.json | jq '.items' | json2table -c 'title, pull_request.url' | tee .ghapi-issue-search.txt
-else
-	(
-		set -x
-		curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-			-H "Accept: application/vnd.github.v3+json" \
-			-H "X-GitHub-Api-Version: 2026-03-10" \
-			-G "https://api.github.com/search/issues" \
-			--data-urlencode "q=$q" \
-			--data-urlencode "per_page=$per_page"
-	) | tee .ghapi-issue-search.json
-fi
+(
+  set -x
+  curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "X-GitHub-Api-Version: 2026-03-10" \
+    -G "https://api.github.com/search/issues" \
+    --data-urlencode "q=$q" \
+    --data-urlencode "per_page=$per_page"
+)
