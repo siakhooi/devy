@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-m merge_method] [-t title] [-M message] owner repo number commit"
+	echo "  -h    Show this help message"
+	echo "  -m    Specify the merge method (merge, squash, rebase), default to squash"
+	echo "  -t    Specify the commit title, default to 'auto merged by $(basename "$0")'"
+	echo "  -M    Specify the commit message, default to 'auto merged by $(basename "$0")'"
+}
+merge_method="squash"
+title="auto merged by $(basename "$0")"
+message="auto merged by $(basename "$0")"
+while getopts "hm:t:M:" opt; do
+	case ${opt} in
+	h)
+		usage
+		exit 0
+		;;
+	m)
+		merge_method="$OPTARG"
+		;;
+	t)
+		title="$OPTARG"
+		;;
+	M)
+		message="$OPTARG"
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 4 ]]; then
+	usage
+	exit 1
+fi
+
+if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+	echo "Error: GITHUB_TOKEN environment variable is not set." >&2
+	exit 1
+fi
+readonly owner="$1"
+readonly repo="$2"
+readonly number="$3"
+readonly sha="$4"
+(
+	set -x
+	curl -X PUT -H "Authorization: Bearer $GITHUB_TOKEN" \
+		-H "Accept: application/vnd.github.v3+json" \
+		-H "X-GitHub-Api-Version: 2026-03-10" \
+		"https://api.github.com/repos/$owner/$repo/pulls/$number/merge" \
+		-d '{
+		"commit_title": "'"$title"'",
+		"commit_message": "'"$message"'",
+		"sha": "'"$sha"'",
+		"merge_method": "'"$merge_method"'"
+	}'
+)

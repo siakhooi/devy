@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+usage() {
+  echo "Usage: $(basename "$0") [-h] owner repo number"
+  echo "  -h    Show this help message"
+}
+while getopts "h" opt; do
+  case ${opt} in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 3 ]]; then
+  usage
+  exit 1
+fi
+
+readonly owner="$1"
+readonly repo="$2"
+readonly number="$3"
+
+if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+  echo "Error: GITHUB_TOKEN environment variable is not set." >&2
+  exit 1
+fi
+
+(
+  set -x
+  curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "X-GitHub-Api-Version: 2026-03-10" \
+    -G "https://api.github.com/repos/$owner/$repo/pulls/$number/reviews"
+)

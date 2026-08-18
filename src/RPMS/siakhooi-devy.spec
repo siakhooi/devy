@@ -27,6 +27,12 @@ dev scripts for devcontainers/wsl
 %{_bindir}/devy-check-binaries
 %{_bindir}/gh-pr-create
 %{_bindir}/gh-repo-create
+%{_bindir}/ghapi-commits-check-runs
+%{_bindir}/ghapi-pulls-get
+%{_bindir}/ghapi-pulls-merge-put
+%{_bindir}/ghapi-pulls-reviews-get
+%{_bindir}/ghapi-pulls-reviews-post
+%{_bindir}/ghapi-search-issues
 %{_bindir}/git-branch
 %{_bindir}/git-commit
 %{_bindir}/git-get
