@@ -6,40 +6,40 @@ license=
 readonly license_default="MIT"
 topics=()
 usage() {
-	echo "Usage: $(basename "$0") [-h] [-p] [-l license] [-t topics] repo_owner repo_name description"
-	echo "  -h: Show this help message"
-	echo "  -p: Create a private repository (default is public)"
-	echo "  -l license: Specify a license for the repository (default is MIT for public repositories)"
-	echo "  -t topics: Specify topics for the repository, multiple allow"
-	echo " eg:"
-	echo "  gh-repo-create -p -t active -t copier-template bash-template 'Copier template for bash package'"
+  echo "Usage: $(basename "$0") [-h] [-p] [-l license] [-t topics] repo_owner repo_name description"
+  echo "  -h: Show this help message"
+  echo "  -p: Create a private repository (default is public)"
+  echo "  -l license: Specify a license for the repository (default is MIT for public repositories)"
+  echo "  -t topics: Specify topics for the repository, multiple allow"
+  echo " eg:"
+  echo "  gh-repo-create -p -t active -t copier-template bash-template 'Copier template for bash package'"
 }
 
 while getopts "hpl:t:" arg; do
-	case $arg in
-	h)
-		usage
-		exit 0
-		;;
-	l)
-		license=$OPTARG
-		;;
-	t)
+  case $arg in
+  h)
+    usage
+    exit 0
+    ;;
+  l)
+    license=$OPTARG
+    ;;
+  t)
     topics+=("$OPTARG")
-		;;
-	p)
-		repo_type=private
-		;;
-	*)
-		usage
-		exit 1
-		;;
-	esac
+    ;;
+  p)
+    repo_type=private
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
 done
 shift $((OPTIND - 1))
 if [[ $# -ne 3 ]]; then
-	usage
-	exit 0
+  usage
+  exit 0
 fi
 
 readonly repo_owner=$1
@@ -49,39 +49,39 @@ readonly description=$3
 options+=(--description "$description")
 
 if [[ -d .git ]]; then
-	options+=("--source" .)
-	options+=("--push")
+  options+=("--source" .)
+  options+=("--push")
 else
-	options+=("--clone")
+  options+=("--clone")
 fi
 
 options+=("--add-readme")
 if [[ $repo_type == "private" ]]; then
-	options+=("--private")
+  options+=("--private")
 
 elif [[ $repo_type == "public" ]]; then
-	[[ -z "$license" && ! -d .git ]] && license=$license_default
-	options+=("--public")
+  [[ -z "$license" && ! -d .git ]] && license=$license_default
+  options+=("--public")
 fi
 
 [[ -n "$license" ]] && options+=("--license" "$license")
 
 (
-	set -x
-	gh repo create "$repo_name" "${options[@]}"
+  set -x
+  gh repo create "$repo_name" "${options[@]}"
 )
 
 if [[ ${#topics[@]} -gt 0 ]]; then
-	topics_option=()
-	for topic in "${topics[@]}"; do
-		topics_option+=("--add-topic" "$topic")
-	done
-	(
-		set -x
-		gh repo edit "$repo_owner/$repo_name" "${topics_option[@]}"
-	)
+  topics_option=()
+  for topic in "${topics[@]}"; do
+    topics_option+=("--add-topic" "$topic")
+  done
+  (
+    set -x
+    gh repo edit "$repo_owner/$repo_name" "${topics_option[@]}"
+  )
 fi
 (
-	set -x
+  set -x
   gh api -X PATCH "repos/$repo_owner/$repo_name" -f delete_branch_on_merge=true
 )

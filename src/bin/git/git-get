@@ -11,35 +11,35 @@ usage() {
 action=
 while getopts "hbnr" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    b)
-      if [[ -n "$action" ]] && [[ "$action" != "branch" ]]; then
-        echo.error "[-b|-n|-r] are mutually exclusive"
-        exit 1
-      fi
-      action=branch
-      ;;
-    n)
-      if [[ -n "$action" ]] && [[ "$action" != "name" ]]; then
-        echo.error "[-b|-n|-r] are mutually exclusive"
-        exit 1
-      fi
-      action=name
-      ;;
-    r)
-      if [[ -n "$action" ]] && [[ "$action" != "root" ]]; then
-        echo.error "[-b|-n|-r] are mutually exclusive"
-        exit 1
-      fi
-      action=root
-      ;;
-    *)
-      usage
+  h)
+    usage
+    exit 0
+    ;;
+  b)
+    if [[ -n "$action" ]] && [[ "$action" != "branch" ]]; then
+      echo.error "[-b|-n|-r] are mutually exclusive"
       exit 1
-      ;;
+    fi
+    action=branch
+    ;;
+  n)
+    if [[ -n "$action" ]] && [[ "$action" != "name" ]]; then
+      echo.error "[-b|-n|-r] are mutually exclusive"
+      exit 1
+    fi
+    action=name
+    ;;
+  r)
+    if [[ -n "$action" ]] && [[ "$action" != "root" ]]; then
+      echo.error "[-b|-n|-r] are mutually exclusive"
+      exit 1
+    fi
+    action=root
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 

@@ -13,25 +13,25 @@ binaries=()
 show_version=false
 while getopts "hVf:" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    f)
-      if [[ ! -f $OPTARG ]]; then
-        echo.error "File not found: $OPTARG"
-        exit 1
-      fi
-      mapfile -t temp_array < <(grep -v '^[[:space:]]*$' "$OPTARG")
-      binaries+=("${temp_array[@]}")
-      ;;
-    V)
-      show_version=true
-      ;;
-    *)
-      usage
+  h)
+    usage
+    exit 0
+    ;;
+  f)
+    if [[ ! -f $OPTARG ]]; then
+      echo.error "File not found: $OPTARG"
       exit 1
-      ;;
+    fi
+    mapfile -t temp_array < <(grep -v '^[[:space:]]*$' "$OPTARG")
+    binaries+=("${temp_array[@]}")
+    ;;
+  V)
+    show_version=true
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -45,24 +45,24 @@ fi
 get_version() {
   local bin=$1
   case $bin in
-    jq) "$bin" --version | cut -d'-' -f2 ;;
-    yq) "$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+' ;;
-    npm|yarn|firebase) "$bin" --version ;;
-    groovy) "$bin" --version | awk '/Groovy Version:/ {print $3}' ;;
-    git|podman) "$bin" --version | cut -d' ' -f3 ;;
-    python) "$bin" --version | awk '{print $2}' ;;
-    gh) "$bin" --version | awk 'NR==1 {print $3}' ;;
-    glab) "$bin" version | awk 'NR==1 {print $2}' ;;
-    node) "$bin" --version | cut -c2- ;;
-    spring) "$bin" --version | cut -d'v' -f2 ;;
-    go) "$bin" version | grep -oP 'go\K[0-9]+\.[0-9]+\.[0-9]+' ;;
-    docker) "$bin" --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+' ;;
-    robot) "$bin" --version | awk '{print $3}' ;;
-    java) "$bin" -version 2>&1 | awk -F'"' '/version/ {print $2}' ;;
-    helm) "$bin" version | grep -oP 'Version:"v\K[0-9]+\.[0-9]+\.[0-9]+' ;;
-    mvn) "$bin" --version | grep -oP 'Apache Maven \K[^ ]+' ;;
-    gradle) "$bin" -v | awk '/^Gradle/ {print $2}' ;;
-    *) echo "" ;;
+  jq) "$bin" --version | cut -d'-' -f2 ;;
+  yq) "$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+' ;;
+  npm | yarn | firebase) "$bin" --version ;;
+  groovy) "$bin" --version | awk '/Groovy Version:/ {print $3}' ;;
+  git | podman) "$bin" --version | cut -d' ' -f3 ;;
+  python) "$bin" --version | awk '{print $2}' ;;
+  gh) "$bin" --version | awk 'NR==1 {print $3}' ;;
+  glab) "$bin" version | awk 'NR==1 {print $2}' ;;
+  node) "$bin" --version | cut -c2- ;;
+  spring) "$bin" --version | cut -d'v' -f2 ;;
+  go) "$bin" version | grep -oP 'go\K[0-9]+\.[0-9]+\.[0-9]+' ;;
+  docker) "$bin" --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+' ;;
+  robot) "$bin" --version | awk '{print $3}' ;;
+  java) "$bin" -version 2>&1 | awk -F'"' '/version/ {print $2}' ;;
+  helm) "$bin" version | grep -oP 'Version:"v\K[0-9]+\.[0-9]+\.[0-9]+' ;;
+  mvn) "$bin" --version | grep -oP 'Apache Maven \K[^ ]+' ;;
+  gradle) "$bin" -v | awk '/^Gradle/ {print $2}' ;;
+  *) echo "" ;;
   esac
 }
 

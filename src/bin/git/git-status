@@ -8,17 +8,17 @@ usage() {
 }
 while getopts "hp" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    p)
-      porcelain=true
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  p)
+    porcelain=true
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))

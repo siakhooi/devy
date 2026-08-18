@@ -7,8 +7,8 @@
 set -euo pipefail
 
 if ! command -v shellcheck &>/dev/null; then
-	echo "Error: shellcheck is not installed. Please install it to run this script."
-	exit 1
+  echo "Error: shellcheck is not installed. Please install it to run this script."
+  exit 1
 fi
 
 set -x

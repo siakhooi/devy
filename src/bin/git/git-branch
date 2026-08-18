@@ -12,18 +12,18 @@ branch=
 action=
 while getopts "hC:" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
-      ;;
-    C)
-      action=create
-      branch="$OPTARG"
-      ;;
-    *)
-      usage
-      exit 1
-      ;;
+  h)
+    usage
+    exit 0
+    ;;
+  C)
+    action=create
+    branch="$OPTARG"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 shift $((OPTIND - 1))

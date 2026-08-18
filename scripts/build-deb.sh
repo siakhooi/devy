@@ -21,68 +21,68 @@ readonly source_home=src
 
 # ===== Argument Parsing =====
 parse_args() {
-	while getopts "h" opt; do
-		case "${opt}" in
-		h)
-			usage
-			exit 0
-			;;
-		*)
-			usage
-			exit 1
-			;;
-		esac
-	done
-	shift $((OPTIND - 1))
+  while getopts "h" opt; do
+    case "${opt}" in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
 }
 
 # ===== Helper Functions =====
 prepare_directory() {
-	mkdir -p "$build_home"
-	rm -rf "${build_home:?}"/*
+  mkdir -p "$build_home"
+  rm -rf "${build_home:?}"/*
 }
 copy_control_files() {
-	cp -vr $source_home/DEBIAN "$build_home"
+  cp -vr $source_home/DEBIAN "$build_home"
 }
 copy_binary_files() {
-	readonly build_bin_home=$build_home/usr/bin
-	mkdir -p "$build_bin_home"
+  readonly build_bin_home=$build_home/usr/bin
+  mkdir -p "$build_bin_home"
 
-	find $source_home/bin -type f -exec cp -vr {} "$build_bin_home" \;
-	chmod 755 "$build_bin_home"/*
+  find $source_home/bin -type f -exec cp -vr {} "$build_bin_home" \;
+  chmod 755 "$build_bin_home"/*
 }
 build_deb_package() {
-	fakeroot dpkg-deb --build -Zxz "$build_home"
+  fakeroot dpkg-deb --build -Zxz "$build_home"
 }
 rename_deb_package() {
-	dpkg-name "${build_home}.deb"
+  dpkg-name "${build_home}.deb"
 }
 generate_checksums() {
-	DEBFILE=$(ls ./target/*.deb)
+  DEBFILE=$(ls ./target/*.deb)
 
-	mv -v "$DEBFILE" .
-	deb_file=$(basename "$DEBFILE")
-	sha256sum "$deb_file" >"$deb_file.sha256sum"
-	sha512sum "$deb_file" >"$deb_file.sha512sum"
+  mv -v "$DEBFILE" .
+  deb_file=$(basename "$DEBFILE")
+  sha256sum "$deb_file" >"$deb_file.sha256sum"
+  sha512sum "$deb_file" >"$deb_file.sha512sum"
 }
 list_deb_contents() {
-	dpkg --contents "$deb_file"
+  dpkg --contents "$deb_file"
 }
 # ===== Main Logic =====
 main() {
 
-	parse_args "$@"
-	prepare_directory
+  parse_args "$@"
+  prepare_directory
 
-	copy_control_files
-	copy_binary_files
+  copy_control_files
+  copy_binary_files
 
-	build_deb_package
-	rename_deb_package
+  build_deb_package
+  rename_deb_package
 
-	generate_checksums
+  generate_checksums
 
-	list_deb_contents
+  list_deb_contents
 }
 # ===== Entrypoint =====
 main "$@"

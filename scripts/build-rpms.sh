@@ -7,14 +7,14 @@
 set -euo pipefail
 
 if [[ ! -f ./build.env ]]; then
-	echo "Error: build.env file not found. Please create it with the necessary variables."
-	exit 1
+  echo "Error: build.env file not found. Please create it with the necessary variables."
+  exit 1
 fi
 # shellcheck disable=SC1091
 source ./build.env
 if [[ -z "${PACKAGE_NAME:-}" ]]; then
-	echo "Error: PACKAGE_NAME variable not set in build.env."
-	exit 1
+  echo "Error: PACKAGE_NAME variable not set in build.env."
+  exit 1
 fi
 
 # ===== Constants =====
@@ -24,73 +24,73 @@ readonly build_home=~/rpmbuild/BUILD
 
 # ===== Argument Parsing =====
 parse_args() {
-	while getopts "h" opt; do
-		case "${opt}" in
-		h)
-			usage
-			exit 0
-			;;
-		*)
-			usage
-			exit 1
-			;;
-		esac
-	done
-	shift $((OPTIND - 1))
+  while getopts "h" opt; do
+    case "${opt}" in
+    h)
+      usage
+      exit 0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+    esac
+  done
+  shift $((OPTIND - 1))
 }
 # ===== Helper Functions =====
 clean_rpmbuild() {
-	rm -rf ~/rpmbuild
+  rm -rf ~/rpmbuild
 }
 setup_rpmbuild_tree() {
-	rpmdev-setuptree
+  rpmdev-setuptree
 }
 copy_spec_file() {
-	cp "$source_home/RPMS/${PACKAGE_NAME}.spec" ~/rpmbuild/SPECS
+  cp "$source_home/RPMS/${PACKAGE_NAME}.spec" ~/rpmbuild/SPECS
 }
 copy_binary_files() {
-	readonly build_bin_home=$build_home/usr/bin
-	mkdir -p "$build_bin_home"
+  readonly build_bin_home=$build_home/usr/bin
+  mkdir -p "$build_bin_home"
 
-	find $source_home/bin -type f -exec cp -vr {} "$build_bin_home" \;
-	chmod 755 "$build_bin_home"/*
+  find $source_home/bin -type f -exec cp -vr {} "$build_bin_home" \;
+  chmod 755 "$build_bin_home"/*
 }
 copy_license_file() {
-	cp -vf ./LICENSE "$build_home"
+  cp -vf ./LICENSE "$build_home"
 }
 build_rpm_package() {
-	rpmlint ~/rpmbuild/SPECS/"${PACKAGE_NAME}".spec
-	rpmbuild -bb -vv ~/rpmbuild/SPECS/"${PACKAGE_NAME}".spec
-	cp -vf ~/rpmbuild/RPMS/noarch/"${PACKAGE_NAME}"-*.rpm .
+  rpmlint ~/rpmbuild/SPECS/"${PACKAGE_NAME}".spec
+  rpmbuild -bb -vv ~/rpmbuild/SPECS/"${PACKAGE_NAME}".spec
+  cp -vf ~/rpmbuild/RPMS/noarch/"${PACKAGE_NAME}"-*.rpm .
 }
 query_rpm_package() {
-	tree ~/rpmbuild/
-	rpm -ql ~/rpmbuild/RPMS/noarch/"${PACKAGE_NAME}"-*.rpm
+  tree ~/rpmbuild/
+  rpm -ql ~/rpmbuild/RPMS/noarch/"${PACKAGE_NAME}"-*.rpm
 }
 generate_rpm_checksums() {
-	rpm_file=$(basename "$(ls ./"${PACKAGE_NAME}"-*.rpm)")
+  rpm_file=$(basename "$(ls ./"${PACKAGE_NAME}"-*.rpm)")
 
-	sha256sum "$rpm_file" >"$rpm_file.sha256sum"
-	sha512sum "$rpm_file" >"$rpm_file.sha512sum"
+  sha256sum "$rpm_file" >"$rpm_file.sha256sum"
+  sha512sum "$rpm_file" >"$rpm_file.sha512sum"
 }
 # ===== Main Logic =====
 main() {
 
-	parse_args "$@"
+  parse_args "$@"
 
-	clean_rpmbuild
-	setup_rpmbuild_tree
+  clean_rpmbuild
+  setup_rpmbuild_tree
 
-	copy_spec_file
-	copy_binary_files
+  copy_spec_file
+  copy_binary_files
 
-	copy_license_file
+  copy_license_file
 
-	build_rpm_package
+  build_rpm_package
 
-	query_rpm_package
+  query_rpm_package
 
-	generate_rpm_checksums
+  generate_rpm_checksums
 }
 
 # ===== Entrypoint =====
