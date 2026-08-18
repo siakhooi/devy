@@ -1,25 +1,26 @@
 {
-	"name": "Debian Development Dev Container",
-	"image": "siakhooi/devcontainer:deb2604",
-	"remoteUser": "maui",
-	"containerUser": "maui",
-	"updateRemoteUserUID": true,
-	"features": {},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-		        "lfm.vscode-makefile-term",
-				"redhat.vscode-yaml",
-				"mkhl.shfmt",
-				"timonwong.shellcheck",
-				"foxundermoon.shell-format"
-			]
-		}
-	},
-	"mounts": [
-		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-	],
-	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	}
+  "name": "Debian Development Dev Container",
+  "image": "siakhooi/devcontainer:deb2604",
+  "remoteUser": "maui",
+  "containerUser": "maui",
+  "updateRemoteUserUID": true,
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+            "lfm.vscode-makefile-term",
+        "redhat.vscode-yaml",
+        "mkhl.shfmt",
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format"
+      ]
+    }
+  },
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  "postStartCommand": "sudo chmod 666 /var/run/docker.sock || true",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  }
 }
