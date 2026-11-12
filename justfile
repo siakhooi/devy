@@ -1,4 +1,5 @@
-help:
+default:
+  @just --list
 clean:
 	rm -rf target *.deb *.sha256sum *.sha512sum *.rpm ~/rpmbuild
 shellcheck:

@@ -65,7 +65,7 @@ if [[ "$action" == "edit" ]]; then
   if [[ ! -f "$git_commit_config" ]]; then
     echo "message: <message>" >"$git_commit_config"
   fi
-  $EDITOR "$git_commit_config"
+  "${EDITOR:-vi}" "$git_commit_config"
   exit $?
 fi
 
