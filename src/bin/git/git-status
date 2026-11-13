@@ -6,6 +6,7 @@ usage() {
   echo "Usage: $(basename "$0") [-h] [-p] [path]"
   echo "  -p   - porcelain, return 0 if clean, 1 if dirty"
 }
+porcelain=false
 while getopts "hp" arg; do
   case $arg in
   h)
