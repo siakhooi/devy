@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+usage() {
+  echo "Usage: $(basename "$0") [-h] <output-file>"
+  echo "  -h               Display this help message"
+  echo "  <output-file>    The file to save the zip to"
+}
+while getopts "h:" arg; do
+  case $arg in
+  h)
+    usage
+    exit 0
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 1 ]]; then
+  usage
+  exit 0
+fi
+
+if [[ ! -d "./.git" ]]; then
+  echo "Error: Current directory is not a git repository."
+  exit 1
+fi
+set -x
+git diff --cached --name-only --diff-filter=ACMR | zip "$1" -@

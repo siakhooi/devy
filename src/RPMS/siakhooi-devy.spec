@@ -40,6 +40,7 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-reset
 %{_bindir}/git-status
 %{_bindir}/git-update-index
+%{_bindir}/git-zip-staged
 %{_bindir}/m2-path
 %{_bindir}/mvn-deps
 %{_bindir}/mvn-install
