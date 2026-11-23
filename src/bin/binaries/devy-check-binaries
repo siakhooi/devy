@@ -50,7 +50,7 @@ get_version() {
   npm | yarn | firebase) "$bin" --version ;;
   groovy) "$bin" --version | awk '/Groovy Version:/ {print $3}' ;;
   git | podman) "$bin" --version | cut -d' ' -f3 ;;
-  python) "$bin" --version | awk '{print $2}' ;;
+  python | uv) "$bin" --version | awk '{print $2}' ;;
   gh) "$bin" --version | awk 'NR==1 {print $3}' ;;
   glab) "$bin" version | awk 'NR==1 {print $2}' ;;
   node) "$bin" --version | cut -c2- ;;
